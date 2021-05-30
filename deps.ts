@@ -1,9 +1,16 @@
-export { 
-   applyGraphQL, 
-   gql, 
-   GQLError
+export {
+  applyGraphQL,
+  gql,
+  GQLError,
 } from "https://deno.land/x/oak_graphql/mod.ts";
 
-export { Router, RouterContext } from "https://deno.land/x/oak@v6.2.0/mod.ts";
+import {
+  Application,
+  Context,
+  Router,
+  RouterContext,
+} from "https://deno.land/x/oak/mod.ts";
 
-export { Application } from "https://deno.land/x/oak@v6.2.0/mod.ts";
+export { Application, Context, Router };
+
+export type { RouterContext };

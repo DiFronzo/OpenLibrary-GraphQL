@@ -1,11 +1,8 @@
-import { Router, RouterContext } from "./deps.ts";
-import { 
-    applyGraphQL, 
-    gql, 
-    GQLError
-} from "./deps.ts";
+import { Context, Router, RouterContext } from "../deps.ts";
+import { applyGraphQL, gql, GQLError } from "../deps.ts";
+import { IGetTaskArgs, IGetTaskArgsStr, ITask, ITaskWork } from "./types.ts";
 
- const typeDefs = (gql as any)`
+const typeDefs = gql`
  type Query {
      findBookISBN(id: Float!): BooksOpenType!
      findBook(id: String!): BooksOpenType!
@@ -29,34 +26,53 @@ import {
  }
 
  type BooksOpenType {
-    publishers: [String]
     number_of_pages: Int
-    isbn_10: [String]
+    table_of_contents: [tocType]
+    weight: String
     covers: [Int]
-    last_modified: modifiedType
+    lc_classifications: [String]
     latest_revision: Int
-    key: String
-    authors: [keyOpenType]
-    ocaid: String
-    contributions: [String]
-    languages: [keyOpenType]
-    classifications: classificationType
     source_records: [String]
     title: String
-    identifiers: identifiersType
-    created: modifiedType
-    isbn_13: Int
-    local_id: [String]
-    publish_date: String
-    works: [keyOpenType]
+    languages: [keyOpenType]
+    subjects: [String]
+    publish_country: String
+    by_statement: String
+    oclc_numbers: [String]
     type: keyOpenType
-    first_sentence: modifiedType
+    physical_dimensions: String
     revision: Int
+    publishers: [String]
+    description: String
+    physical_format: String
+    key: String
+    authors: [keyOpenType]
+    publish_places: [String]
+    pagination: String
+    created: modifiedType
+    lccn: [String]
+    notes: String
+    identifiers: identifiersType
+    isbn_13: [String]
+    dewey_decimal_class: [String]
+    isbn_10: [String]
+    publish_date: String
+    works: [keyType]
+    last_modified: modifiedType
+    local_id: [String]
+    ocaid: String
+    contributions: [String]
+    first_sentence: modifiedType
  }
 
- type classificationType {
-    lc_classifications: [String]
-    dewey_decimal_class: [String]
+ type collectionType {
+   name: String
+ }
+
+ type tocType {
+   title: String
+   level: Int
+   type: keyOpenType
  }
 
  type modifiedType {
@@ -67,11 +83,19 @@ import {
  type identifiersType {
     goodreads: [String]
     librarything: [String]
+    amazon: [String]
+    google: [String]
+    project_gutenberg: [String]
  }
 
  type keyOpenType {
     key: String
+    name: String
  }
+
+ type keyType {
+  key: String
+}
 
  type authorOpenType {
     author: keyOpenType
@@ -79,70 +103,90 @@ import {
  }
  `;
 
- const resolveContext = (ctx: any, resolverName: string) => {
-     const agent: string = ctx.req.headers.get('User-Agent');
-     ctx.res.headers.set('resolver', `${agent.toLocaleLowerCase().replace('/', '-')}-${resolverName}`);
- }
+const resolveContext = (ctx: any, resolverName: string) => {
+  const agent: string = ctx.req.headers.get("User-Agent");
+  ctx.res.headers.set(
+    "resolver",
+    `${agent.toLocaleLowerCase().replace("/", "-")}-${resolverName}`,
+  );
+};
 
- const resolvers = {
-    Query: {
-        findBookISBN: (parent: any, {id}: any, context: any, info: any) => {
-            resolveContext(context, 'book');
-            return fetch(`https://openlibrary.org/isbn/${id}.json`, {
-            method: 'GET', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then(response => response.json())
-            .then(data => {
-                return data;
-            })
-            .catch((error) => {
-                throw new GQLError(`Something went wrong with the id: "${id}". ${error}`)
-            });
+const resolvers = {
+  Query: {
+    findBookISBN: (
+      _parent: { findBookISBN: string },
+      args: IGetTaskArgs,
+      ctx: Context,
+    ): Promise<ITask | null> => {
+      resolveContext(ctx, "book");
+      return fetch(`https://openlibrary.org/isbn/${args.id}.json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
         },
-        findBook: (parent: any, {id}: any, context: any, info: any) => {
-            resolveContext(context, 'book');
-            return fetch(`https://openlibrary.org/books/${id}.json`, {
-            method: 'GET', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then(response => response.json())
-            .then(data => {
-                return data;
-            })
-            .catch((error) => {
-                throw new GQLError(`Something went wrong with the id: "${id}". ${error}`)
-            });
-        },
-        findWork: (parent: any, {id}: any, context: any, info: any) => {
-            resolveContext(context, 'book');
-            return fetch(`https://openlibrary.org/works/${id}.json`, {
-            method: 'GET', // or 'PUT'
-            headers: {
-                'Content-Type': 'application/json',
-            }})
-            .then(response => response.json())
-            .then(data => {
-                return data;
-            })
-            .catch((error) => {
-                throw new GQLError(`Something went wrong with the id: "${id}". ${error}`)
-            });
-        },
-    }
- };
-
-export const GraphQLService = async (path: string) => {
-    return await applyGraphQL<Router>({
-      Router,
-      path,
-      typeDefs: typeDefs,
-      resolvers: resolvers,
-      context: (ctx: RouterContext) => ({
-              req: ctx.request,
-              res: ctx.response
       })
-    });
-  };
+        .then((response) => response.json())
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          throw new GQLError(error);
+        });
+    },
+    findBook: (
+      _parent: { findBook: string },
+      args: IGetTaskArgsStr,
+      ctx: Context,
+    ): Promise<ITask | null> => {
+      resolveContext(ctx, "book");
+      return fetch(`https://openlibrary.org/books/${args.id}.json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          throw new GQLError(error);
+        });
+    },
+    findWork: (
+      _parent: { findWork: string },
+      args: IGetTaskArgsStr,
+      ctx: Context,
+    ): Promise<ITaskWork | null> => {
+      resolveContext(ctx, "work");
+      return fetch(`https://openlibrary.org/works/${args.id}.json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          return data;
+        })
+        .catch((error) => {
+          throw new GQLError(error);
+        });
+    },
+  },
+};
+
+const GraphQLService = async (path: string) => {
+  return await applyGraphQL<Router>({
+    Router,
+    path,
+    typeDefs: typeDefs,
+    resolvers: resolvers,
+    context: (ctx: RouterContext) => ({
+      req: ctx.request,
+      res: ctx.response,
+    }),
+  });
+};
+
+export default GraphQLService;
