@@ -95,4 +95,4 @@ If you want to say **thank you** or/and support active development of `OpenLibra
 - Add a [GitHub Star](https://github.com/DiFronzo/OpenLibrary-GraphQL) to the project.
 
 ## ⚠️ License
-`OpenLibrary-GraphQL` is free and open-source software licensed under the [MIT](https://github.com/DiFronzo/OpenLibrary-GraphQL/blob/main/LICENSE). This is not an offical relase from [Open Library](https://github.com/internetarchive/openlibrary). Use on your own risk.
+`OpenLibrary-GraphQL` is free and open-source software licensed under the [MIT](https://github.com/DiFronzo/OpenLibrary-GraphQL/blob/main/LICENSE). This is not an offical release from [Open Library](https://github.com/internetarchive/openlibrary). Use on your own risk.
