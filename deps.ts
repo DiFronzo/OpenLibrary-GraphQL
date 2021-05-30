@@ -13,4 +13,8 @@ import {
 
 export { Application, Context, Router };
 
+export {
+  parse
+} from 'https://deno.land/std/flags/mod.ts';
+
 export type { RouterContext };
