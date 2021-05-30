@@ -17,13 +17,13 @@ Verify that the installation was successful by running the following command tha
 deno --version
 ```
 
-To quickly start using the code run the following command. With the flag `-allow-net` that is allowing network access. 
+To quickly start using the code run the following command. With the flag `--allow-net` that is allowing network access. 
 
 ```bash
 deno run --allow-net https://raw.githubusercontent.com/DiFronzo/OpenLibrary-GraphQL/main/mod.ts
 ```
 
-GraphQL is now running on [http://localhost:8080/graphql](http://localhost:8080/graphql).
+GraphQL should now be running on [http://localhost:8080/graphql](http://localhost:8080/graphql).
 
 That's all you need to know to start! 🎉
 
@@ -42,7 +42,7 @@ query
   }
 }
 ```
-### `Find books by Edition`
+### `Find books by edition`
 The function `findBook` is used to find books by using the edition [slug](https://openlibrary.org/books/OL24981637M). The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
 ```gql
 query
@@ -55,7 +55,7 @@ query
 }
 ```
 ### `Find works`
-The function `findWork` is used to work using the work [slug](https://openlibrary.org/works/OL45883W). A Work is a logical collection of similar Editions. The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
+The function `findWork` is used to find work using the works [slug](https://openlibrary.org/works/OL45883W). A work is a logical collection of similar editions. The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
 ```gql
 query
 {
@@ -68,7 +68,7 @@ query
 }
 ```
 ### `Find authors`
-The function `findAuthor` is used find author by using the author [slug](https://openlibrary.org/authors/OL576769A). The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
+The function `findAuthor` is used to find an author by using the authors [slug](https://openlibrary.org/authors/OL576769A). The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
 ```gql
 query
 {
