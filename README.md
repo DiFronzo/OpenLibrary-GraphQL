@@ -67,6 +67,21 @@ query
   }
 }
 ```
+### `Find authors`
+The function `findAuthor` is used find author by using the author [slug](https://openlibrary.org/authors/OL576769A). The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
+```gql
+query
+{
+  findAuthor (id: "OL576769A"){
+    name
+    personal_name
+    alternate_names
+    remote_ids {
+      wikidata
+    }
+  }
+}
+```
 Demo at https://openlib-graphql.herokuapp.com/graphql. If you get "Failed to fetch schema", change "http" to "https" in the url for GraphQL.
 
 ### 🐳 Docker-way to quick start

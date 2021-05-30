@@ -1,12 +1,31 @@
 import { Context, Router, RouterContext } from "../deps.ts";
 import { applyGraphQL, gql, GQLError } from "../deps.ts";
-import { IGetTaskArgs, IGetTaskArgsStr, ITask, ITaskWork } from "./types.ts";
+import { IGetTaskArgs, IGetTaskArgsStr, ITask, ITaskWork, ITaskAuthor } from "./types.ts";
 
 const typeDefs = gql`
  type Query {
      findBookISBN(id: Float!): BooksOpenType!
      findBook(id: String!): BooksOpenType!
      findWork(id: String!): WorksOpenType!
+     findAuthor(id: String!): AuthorOpenType!
+ }
+
+ type AuthorOpenType {
+    bio: String
+    name: String
+    links: [linksType]
+    personal_name: String
+    death_date: String
+    alternate_names: [String]
+    created: modifiedType
+    photos: [Int]
+    last_modified: modifiedType
+    latest_revision: Int
+    key: String
+    birth_date: String
+    revision: Int
+    type: keyType
+    remote_ids: remoteIdsType
  }
 
  type WorksOpenType {
@@ -18,11 +37,13 @@ const typeDefs = gql`
     key: String
     authors: [authorOpenType]
     subject_times: [String]
-    type: keyOpenType
+    type: keyType
     latest_revision: Int
     revision: Int
     created: modifiedType
     last_modified: modifiedType
+    links: [linksType]
+    excerpts: [excerptsType]
  }
 
  type BooksOpenType {
@@ -34,24 +55,24 @@ const typeDefs = gql`
     latest_revision: Int
     source_records: [String]
     title: String
-    languages: [keyOpenType]
+    languages: [keyType]
     subjects: [String]
     publish_country: String
     by_statement: String
     oclc_numbers: [String]
-    type: keyOpenType
+    type: keyType
     physical_dimensions: String
     revision: Int
     publishers: [String]
     description: String
     physical_format: String
     key: String
-    authors: [keyOpenType]
+    authors: [keyType]
     publish_places: [String]
     pagination: String
     created: modifiedType
     lccn: [String]
-    notes: String
+    notes: modifiedType
     identifiers: identifiersType
     isbn_13: [String]
     dewey_decimal_class: [String]
@@ -63,6 +84,36 @@ const typeDefs = gql`
     ocaid: String
     contributions: [String]
     first_sentence: modifiedType
+    ia_box_id: [String]
+    edition_name: String
+    translation_of: String
+    series: [String]
+    copyright_date: String
+    contributors: [contributorsType]
+    translated_from: [keyType]
+ }
+
+ type remoteIdsType {
+  wikidata: String
+  isni: String
+  viaf: String
+ }
+
+ type excerptsType {
+  excerpt: String
+  comment: String
+  author: keyType
+ }
+
+ type linksType {
+  title: String
+  url: String
+  type: keyType
+ }
+
+ type contributorsType {
+   role: String
+   name: String
  }
 
  type collectionType {
@@ -72,7 +123,7 @@ const typeDefs = gql`
  type tocType {
    title: String
    level: Int
-   type: keyOpenType
+   type: keyType
  }
 
  type modifiedType {
@@ -86,11 +137,7 @@ const typeDefs = gql`
     amazon: [String]
     google: [String]
     project_gutenberg: [String]
- }
-
- type keyOpenType {
-    key: String
-    name: String
+    deposito_legal: [String]
  }
 
  type keyType {
@@ -98,8 +145,8 @@ const typeDefs = gql`
 }
 
  type authorOpenType {
-    author: keyOpenType
-    type: keyOpenType
+    author: keyType
+    type: keyType
  }
  `;
 
@@ -127,7 +174,11 @@ const resolvers = {
       })
         .then((response) => response.json())
         .then((data) => {
-          return data;
+          if (data && !data.error) {
+            return data;
+          } else {
+            throw new GQLError(data.error);
+          }
         })
         .catch((error) => {
           throw new GQLError(error);
@@ -147,7 +198,11 @@ const resolvers = {
       })
         .then((response) => response.json())
         .then((data) => {
-          return data;
+          if (data && !data.error) {
+            return data;
+          } else {
+            throw new GQLError(data.error);
+          }
         })
         .catch((error) => {
           throw new GQLError(error);
@@ -167,13 +222,41 @@ const resolvers = {
       })
         .then((response) => response.json())
         .then((data) => {
-          return data;
+          if (data && !data.error) {
+            return data;
+          } else {
+            throw new GQLError(data.error);
+          }
         })
         .catch((error) => {
           throw new GQLError(error);
         });
     },
-  },
+    findAuthor: (
+      _parent: { findAuthor: string },
+      args: IGetTaskArgsStr,
+      ctx: Context,
+    ): Promise<ITaskAuthor | null> => {
+      resolveContext(ctx, "author");
+      return fetch(`https://openlibrary.org/author/${args.id}.json`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data && !data.error) {
+            return data;
+          } else {
+            throw new GQLError(data.error);
+          }
+        })
+        .catch((error) => {
+          throw new GQLError(error);
+        });
+    }
+  }
 };
 
 const GraphQLService = async (path: string) => {
