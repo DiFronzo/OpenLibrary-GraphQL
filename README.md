@@ -4,7 +4,8 @@
 </h1>
 <p align="center">Search books using work, edition and ISBN with OpenLibrary API using a <b>backend</b> (Deno and GraphQL).
 
-<p align="center"><a href="https://github.com/DiFronzo/OpenLibrary-GraphQL/releases" target="_blank"><img src="https://img.shields.io/badge/version-v1.0.0-blue?style=for-the-badge&logo=none" alt="OL-GQL version" /></a>&nbsp;<a href="https://deno.land/x/OpenLibrary-GraphQL@v1.0" target="_blank"><img src="https://img.shields.io/badge/Deno-1.10+-00ADD8?style=for-the-badge&logo=deno" alt="deno version" /></a>&nbsp;<img src="https://img.shields.io/badge/license-MIT-red?style=for-the-badge&logo=none" alt="license" /></p>
+<p align="center"><a href="https://github.com/DiFronzo/OpenLibrary-GraphQL/releases" target="_blank"><img src="https://img.shields.io/badge/version-v1.0.0-blue?style=for-the-badge&logo=none" alt="OL-GQL version" /></a>&nbsp;<a href="https://deno.land/x/OpenLibrary-GraphQL@v1.0" target="_blank"><img src="https://img.shields.io/badge/Deno-1.10+-00ADD8?style=for-the-badge&logo=deno" alt="deno version" /></a>&nbsp;<img src="https://img.shields.io/badge/license-MIT-red?style=for-the-badge&logo=none" alt="license" />&nbsp;<img alt="code size" src="https://img.shields.io/github/languages/code-size/difronzo/OpenLibrary-GraphQL?style=for-the-badge&logo=none"></p>
+
 
 ## ⚡️ Quick start
 
@@ -58,17 +59,19 @@ The function `findWork` is used to work using the work [slug](https://openlibrar
 ```gql
 query
 {
-  findBook (id: "OL24981637M") {
-    title
-    by_statement
-    publish_date
+  findWork (id: "OL45883W") {
+    description
+    type {
+      key
+    }
   }
 }
 ```
+Demo at https://openlib-graphql.herokuapp.com/graphql. If you get "Failed to fetch schema", change "http" to "https" in the url for GraphQL.
 
 ### 🐳 Docker-way to quick start
 
-If you don't want to install OpenLibrary-GraphQL to your system, you feel free to using the following [Docker image](https://hub.docker.com/) (in progress..) and run CLI from isolated container.
+If you don't want to install OpenLibrary-GraphQL to your system, you feel free to using the following [Docker image](https://hub.docker.com/) (in progress..) and run GraphQL from isolated container.
 
 ## ⭐️ Project assistance
 
