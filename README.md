@@ -86,7 +86,11 @@ Demo at https://openlib-graphql.herokuapp.com/graphql. If you get "Failed to fet
 
 ### 🐳 Docker-way to quick start
 
-If you don't want to install OpenLibrary-GraphQL to your system, you feel free to using the following [Docker image](https://hub.docker.com/) (in progress..) and run GraphQL from isolated container.
+If you don't want to install OpenLibrary-GraphQL to your system, you feel free to using the following [Docker image](https://hub.docker.com/r/difronzo/openlibrary-graphql) to run GraphQL from isolated container.
+
+```bash
+docker run -d --init -p 8080:8080 difronzo/openlibrary-graphql:latest
+```
 
 ## ⭐️ Project assistance
 
