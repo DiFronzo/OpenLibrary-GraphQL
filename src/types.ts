@@ -60,7 +60,7 @@ export interface ITask {
 }
 
 export interface ITaskWork {
-  title:string;
+  title: string;
   description: string;
   covers: number[];
   subject_places: string[];
