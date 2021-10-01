@@ -29,6 +29,7 @@ const typeDefs = gql`
  }
 
  type WorksOpenType {
+    title: String
     description: String
     covers: [Int]
     subject_places: [String]
