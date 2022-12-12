@@ -55,11 +55,11 @@ query
 }
 ```
 ### `Find works`
-The function `findWork` is used to find work using the works [slug](https://openlibrary.org/works/OL45883W). A work is a logical collection of similar editions. The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
+The function `findWork` is used to find work using the works [slug](https://openlibrary.org/works/OL81613W). A work is a logical collection of similar editions. The `id` need to be a string. With GraphQL you can choose what result should be returned. Use the `DOCS` tab on the right side for available parameters.
 ```gql
 query
 {
-  findWork (id: "OL45883W") {
+  findWork (id: "OL81613W") {
     description
     type {
       key
@@ -82,7 +82,7 @@ query
   }
 }
 ```
-Demo at https://openlib-graphql.herokuapp.com/graphql. If you get "Failed to fetch schema", change "http" to "https" in the url for GraphQL.
+Demo at http://openlib-graphql.gsbxcucmcjeneaft.germanywestcentral.azurecontainer.io:8080/graphql.
 
 ### 🐳 Docker-way to quick start
 
