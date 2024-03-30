@@ -82,7 +82,7 @@ query
   }
 }
 ```
-Demo at http://openlib-graphql.gsbxcucmcjeneaft.germanywestcentral.azurecontainer.io:8080/graphql.
+Demo at [this url](https://openlibrary-graphql.onrender.com/graphql) but you need to also change the url in the editor to the same. 
 
 ### 🐳 Docker-way to quick start
 
