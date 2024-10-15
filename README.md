@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="https://openlibrary.org/static/images/openlibrary-logo-tighter.svg" width="300px"/><br/>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/b/b6/Open_Library_tight_logo.svg" width="300px"/><br/>
   OpenLibrary-GraphQL
 </h1>
 <p align="center">Search books using work, edition and ISBN with OpenLibrary API using a <b>backend</b> (Deno and GraphQL).
